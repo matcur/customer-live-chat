@@ -18,8 +18,8 @@ export const CustomerChat = (props: IProps) => {
   const addNewMessage = (text: string) => {
     const newMessage = {
       text,
-      author: messages[0].author,
-      chatId: props.chatId
+      author: messages[1].author,
+      chatId: props.chatId,
     }
     setMessages([...messages, newMessage])
   }
@@ -38,7 +38,7 @@ export const CustomerChat = (props: IProps) => {
             onNewMessageChange={() => {}}
             onMessageSubmit={v => addNewMessage(v)}/>
         </div>
-        : 
+        :
         <div 
           className="customer-chat-opener"
           onClick={(e) => showChat()}></div>
