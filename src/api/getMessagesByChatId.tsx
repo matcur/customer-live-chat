@@ -1,6 +1,6 @@
 import { IMessage, IUser } from "../model"
 
-export function getMessagesByChatId(chatId: number) {
+export function getMessagesByChatId(chatId: number): IMessage[] {
   const user1: IUser = {
     name: 'my name',
     avatarPath: '/cats/index-1.jpg',
@@ -30,5 +30,5 @@ export function getMessagesByChatId(chatId: number) {
     },
   ]
 
-  return messages
+  return []
 }

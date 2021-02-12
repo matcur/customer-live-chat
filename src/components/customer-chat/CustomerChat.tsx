@@ -1,7 +1,7 @@
 import React from "react"
 import { useState } from "react"
 import { getMessagesByChatId } from "../../api/getMessagesByChatId"
-import { IMessage } from "../../model"
+import { IMessage, IUser } from "../../model"
 import { Header } from "./Header"
 import { MessageList } from "./MessageList"
 import { NewMessage } from "./NewMessage"
@@ -9,6 +9,8 @@ import { NewMessage } from "./NewMessage"
 interface IProps {
   onMessageAdded: (messag: IMessage) => void
   chatId: number
+  helloMessageText?: string
+  consultant: IUser
 }
 
 export const CustomerChat = (props: IProps) => {
@@ -24,6 +26,13 @@ export const CustomerChat = (props: IProps) => {
     setMessages([...messages, newMessage])
   }
   const showChat = () => setNeedShowChat(true)
+
+  if (messages.length === 0 && props.helloMessageText !== undefined)
+    setMessages([{
+      text: props.helloMessageText,
+      author: props.consultant,
+      chatId: props.chatId,
+    }])
   
   return (
     <div className="customer-chat-wrapper">
