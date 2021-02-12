@@ -1,59 +1,107 @@
-import { strict } from "assert"
-import { useState } from "react"
-import { IUser } from "../../model"
+import React from "react"
 
 interface IProps {
   onNewMessageChange: (text: string) => void
   onMessageSubmit: (text: string) => void
 }
 
-export const NewMessage = (props: IProps) => {
-  const validDataState = {
-    isTextValid: true
+interface IState {
+  data: InputData
+  dataState: InputDataState,
+  validDataState: {
+    isTextValid: boolean
   }
-  const [text, setText] = useState('')
-  const [dataState, setDataState] = useState(validDataState)
+}
 
-  const onTextChange = (text: string) => {
-    setText(text)
-    props.onNewMessageChange(text)
+interface InputDataState {
+  isTextValid: boolean
+}
+
+interface InputData {
+  text: string
+}
+
+export class NewMessage extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props)
+
+    const validDataState: InputDataState = {
+      isTextValid: true
+    }
+
+    this.state = {
+      data: {
+        text: ''
+      },
+      dataState: {...validDataState},
+      validDataState: validDataState,
+    }
   }
-  const onMessageSubmit = (text: string) => {
-    if (!isValidData()) {
-      showInputErrors()
+
+  updateData<S extends keyof InputData>(key: S, value: InputData[S]) {
+    this.setState(state => ({
+      data: {
+        ...state.data,
+        [key]: value,
+      }
+    }))
+  }
+
+  onTextChange(text: string) {
+    this.updateData('text', text)
+    this.props.onNewMessageChange(text)
+  }
+
+  onMessageSubmit(text: string) {
+    if (!this.isValidData(this.state.data)) {
+      this.showInputErrors()
       return
     }
 
-    clearErrors()
-    props.onMessageSubmit(text)
-    setText('')
+    this.clearErrors()
+    this.props.onMessageSubmit(text)
+    this.updateData('text', '')
   }
 
-  const isValidData = () => {
-    return text != ''
+  isValidData(data: InputData) {
+    return data.text !== ''
   }
-  const showInputErrors = () => {
-    const dataState = {...validDataState}
-    if (text == '')
+
+  showInputErrors = () => {
+    const dataState = {...this.state.validDataState}
+    const data = this.state.data
+    if (data.text === '')
       dataState.isTextValid = false
 
-    setDataState(dataState)
+    this.setState({
+      dataState: dataState,
+    })
   }
-  const clearErrors = () => setDataState(validDataState)
 
-  return (
-    <div className="customer-chat__new-message">
-      <div className="customer-chat__message-text customer-chat__input">
-        <input 
-          value={text}
-          onChange={(e) => onTextChange(e.target.value)}
-          className="customer-chat__message-input"/>
-        <span className="customer-chat__alert">{dataState.isTextValid? '': 'must be filled'}</span>
+  clearErrors() {
+    this.setState(state => ({
+      dataState: state.validDataState
+    }))
+  }
+
+  render() {
+    const state = this.state
+    const data = this.state.data
+
+    return (
+      <div className="customer-chat__new-message">
+        <div className="customer-chat__message-text customer-chat__input">
+          <input 
+            value={data.text}
+            onChange={(e) => this.onTextChange(e.target.value)}
+            className="customer-chat__message-input"/>
+          <span className="customer-chat__alert">{state.dataState.isTextValid? '': 'must be filled'}</span>
+        </div>
+        <button 
+          onClick={(e) => this.onMessageSubmit(data.text)}
+          type="submit"
+          className="customer-chat__send-btn">Отправить</button>
       </div>
-      <button 
-        onClick={(e) => onMessageSubmit(text)}
-        type="submit"
-        className="customer-chat__send-btn">Отправить</button>
-    </div>
-  )
+    )
+  }
 }

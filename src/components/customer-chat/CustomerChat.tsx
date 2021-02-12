@@ -23,6 +23,7 @@ export const CustomerChat = (props: IProps) => {
     }
     setMessages([...messages, newMessage])
   }
+  const showChat = () => setNeedShowChat(true)
   
   return (
     <div className="customer-chat-wrapper">
@@ -40,7 +41,7 @@ export const CustomerChat = (props: IProps) => {
         : 
         <div 
           className="customer-chat-opener"
-          onClick={(e) => setNeedShowChat(true)}></div>
+          onClick={(e) => showChat()}></div>
       }
     </div>
   )

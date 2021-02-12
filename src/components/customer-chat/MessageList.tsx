@@ -1,4 +1,4 @@
-import { IMessage, IUser } from "../../model"
+import { IMessage } from "../../model"
 import { Message } from "./Message"
 
 interface IProps {
@@ -7,7 +7,6 @@ interface IProps {
 }
 
 export const MessageList = (props: IProps) => {
-
   return (
     <div className="customer-chat__messages">
       {props.messages?.map(m => <Message message={m} />)}
