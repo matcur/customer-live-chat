@@ -11,6 +11,7 @@ interface IProps {
   chatId: number
   helloMessageText?: string
   consultant: IUser
+  currentUser: IUser
 }
 
 export const CustomerChat = (props: IProps) => {
@@ -20,20 +21,24 @@ export const CustomerChat = (props: IProps) => {
   const addNewMessage = (text: string) => {
     const newMessage = {
       text,
-      author: messages[1].author,
+      author: props.currentUser,
       chatId: props.chatId,
     }
     setMessages([...messages, newMessage])
+
+    props.onMessageAdded(newMessage)
   }
   const showChat = () => setNeedShowChat(true)
-
-  if (messages.length === 0 && props.helloMessageText !== undefined)
+  const addHelloMessage = () => 
     setMessages([{
-      text: props.helloMessageText,
+      text: props.helloMessageText?? 'Hi',
       author: props.consultant,
       chatId: props.chatId,
     }])
-  
+
+  if (messages.length === 0 && props.helloMessageText !== undefined)
+    addHelloMessage()  
+
   return (
     <div className="customer-chat-wrapper">
       {
