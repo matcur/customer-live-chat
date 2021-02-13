@@ -11,7 +11,7 @@ interface IProps {
   chatId: number
   helloMessageText?: string
   consultant: IUser
-  currentUser: IUser
+  customer: IUser
 }
 
 export const CustomerChat = (props: IProps) => {
@@ -21,7 +21,7 @@ export const CustomerChat = (props: IProps) => {
   const addNewMessage = (text: string) => {
     const newMessage = {
       text,
-      author: props.currentUser,
+      author: props.customer,
       chatId: props.chatId,
     }
     setMessages([...messages, newMessage])

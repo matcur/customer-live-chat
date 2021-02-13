@@ -22,7 +22,7 @@ function App() {
        chatId={1}
        helloMessageText="Hi it's me"
        consultant={consultant}
-       currentUser={currentUser}/>
+       customer={currentUser}/>
     </div>
   );
 }
